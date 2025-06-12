@@ -1,0 +1,7 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.set(rc={'figure.figsize':(22,20)})
+
+correlation_matrix = life.corr(numeric_only=True).round(2)
+sns.heatmap(data=correlation_matrix, annot=True)
