@@ -79,7 +79,7 @@ void findTopStudent(const Student students[], int count) {
         }
     }
 
-    printf("\n📌 최고 점수 학생 정보:\n");
+    printf("\n 최고 점수 학생 정보:\n");
     printStudent(&students[topIndex]);
 }
 
