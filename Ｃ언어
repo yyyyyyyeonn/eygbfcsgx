@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_STUDENTS 100
+
+typedef struct {
+    int id;
+    char name[50];
+    int score_ko;
+    int score_en;
+    int score_math;
+    float average;
+    char grade;
+} Student;
+
+void inputStudent(Student *s) {
+    printf("학번: ");
+    scanf("%d", &s->id);
+    printf("이름: ");
+    scanf("%s", s->name);
+    printf("국어 점수: ");
+    scanf("%d", &s->score_ko);
+    printf("영어 점수: ");
+    scanf("%d", &s->score_en);
+    printf("수학 점수: ");
+    scanf("%d", &s->score_math);
+
+    s->average = (s->score_ko + s->score_en + s->score_math) / 3.0;
+
+    if (s->average >= 90) s->grade = 'A';
+    else if (s->average >= 80) s->grade = 'B';
+    else if (s->average >= 70) s->grade = 'C';
+    else if (s->average >= 60) s->grade = 'D';
+    else s->grade = 'F';
+}
+
+void printStudent(const Student *s) {
+    printf("\n학번: %d\n", s->id);
+    printf("이름: %s\n", s->name);
+    printf("국어: %d, 영어: %d, 수학: %d\n", s->score_ko, s->score_en, s->score_math);
+    printf("평균: %.2f\n", s->average);
+    printf("학점: %c\n", s->grade);
+}
+
+void saveToFile(const Student students[], int count, const char *filename) {
+    FILE *fp = fopen(filename, "w");
+    if (!fp) {
+        printf("파일 저장 실패\n");
+        return;
+    }
+
+    fprintf(fp, "학번,이름,국어,영어,수학,평균,학점\n");
+    for (int i = 0; i < count; i++) {
+        fprintf(fp, "%d,%s,%d,%d,%d,%.2f,%c\n",
+                students[i].id,
+                students[i].name,
+                students[i].score_ko,
+                students[i].score_en,
+                students[i].score_math,
+                students[i].average,
+                students[i].grade);
+    }
+
+    fclose(fp);
+    printf("파일 저장 완료: %s\n", filename);
+}
+
+void findTopStudent(const Student students[], int count) {
+    if (count == 0) {
+        printf("학생 정보가 없습니다.\n");
+        return;
+    }
+
+    int topIndex = 0;
+    for (int i = 1; i < count; i++) {
+        if (students[i].average > students[topIndex].average) {
+            topIndex = i;
+        }
+    }
+
+    printf("\n📌 최고 점수 학생 정보:\n");
+    printStudent(&students[topIndex]);
+}
+
+int main() {
+    Student students[MAX_STUDENTS];
+    int n;
+
+    printf("학생 수를 입력하세요 (최대 %d명): ", MAX_STUDENTS);
+    scanf("%d", &n);
+
+    if (n <= 0 || n > MAX_STUDENTS) {
+        printf("잘못된 학생 수입니다.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        printf("\n[%d번째 학생 정보 입력]\n", i + 1);
+        inputStudent(&students[i]);
+    }
+
+    printf("\n==== 전체 학생 정보 ====\n");
+    for (int i = 0; i < n; i++) {
+        printStudent(&students[i]);
+    }
+
+    findTopStudent(students, n);
+    saveToFile(students, n, "students.csv");
+
+    return 0;
+}
