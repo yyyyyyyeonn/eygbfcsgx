@@ -1,3 +1,12 @@
-fokodwjkxlkmklmdnhewguyfqdp0oidpojojddcvfjhvdas;,scjkedjdisihfkjwhuqwyddewrguirbir
-rhuweigugeifhbwjkfhkjfewjkfitgf7twgwueibru3bru3brugqwudhi
-jnjfbijbghgbjhuwqw21ttedde,./f.mleffhiefhiouhougoufihofujfeohiodheywuiyhwoqk;,/,.ldniedledjjl.;em;ekk;wkewljefihlk,khgeyufgyiugdudgsguigudsgudi
+model = LogisticRegression(max_iter=200)
+model.fit(X_train_scaled, y_train)
+
+혼동행렬 시각화
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, cmap='Blues', fmt='d',
+            xticklabels=iris.target_names, yticklabels=iris.target_names)
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
